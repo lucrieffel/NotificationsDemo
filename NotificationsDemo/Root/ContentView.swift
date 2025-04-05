@@ -38,10 +38,10 @@ struct ContentView: View {
                     Label("Calendar", systemImage: "calendar")
                 }
                 
-                EmptyView()
-                    .tabItem{
-                        Label("Blank tab", systemImage: "paper")
-                    }
+//                EmptyView()
+//                    .tabItem{
+//                        Label("Blank tab", systemImage: "paper")
+//                    }
  
                 //MARK: this view shows the authenticated user, login info, change password form, and sign out
                 Profile()

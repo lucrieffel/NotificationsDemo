@@ -213,12 +213,36 @@ struct CalendarView: View {
 
                         Spacer()
 
+                        // Generate Report Button
+                        Button(action: { navigateToReport = true }) {
+                            HStack {
+                                Image(systemName: "doc.text.fill")
+                                    .font(.headline)
+                                Text("Generate Custom Report")
+                                    .font(.headline)
+                                    .fontWeight(.medium)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [ColorType.blue1.color, ColorType.blue2.color]),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .foregroundColor(.white)
+                            .cornerRadius(12)
+                            .shadow(color: ColorType.blue1.color.opacity(0.3), radius: 5, x: 0, y: 3)
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 20)
                     }
                 }
             }
         }
         .navigationDestination(isPresented: $navigateToReport) {
-            ReportGenerationView()
+            ReportView()
         }
         .navigationTitle("Activity Calendar")
         .navigationBarTitleDisplayMode(.inline)
@@ -461,6 +485,7 @@ extension CalendarView {
         return days
     }
 }
+
 // MARK: - Example GraphsViewForDate
 struct GraphsViewForDate: View {
     let selectedDate: Date
@@ -480,78 +505,4 @@ struct GraphsViewForDate: View {
     CalendarView(interval: calendarInterval, dateSelected: $dateSelected, displayEvents: $displayEvents)
         .environmentObject(HealthKitManager())
         .environmentObject(MoodViewModel())
-}
-
-// Add ReportGenerationView
-struct ReportGenerationView: View {
-    @Environment(\.dismiss) private var dismiss
-    @State private var startDate = Date()
-    @State private var endDate = Date()
-    
-    var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
-                // Header
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Generate Report")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                        Text("Select a date range for your report")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                    }
-                    Spacer()
-                }
-                .padding()
-                .background(Color(UIColor.secondarySystemBackground))
-                
-                Form {
-                    Section {
-                        DatePicker("Start Date", selection: $startDate, displayedComponents: .date)
-                        DatePicker("End Date", selection: $endDate, displayedComponents: .date)
-                    }
-                    .listRowBackground(Color(UIColor.systemBackground))
-                    
-                    Section {
-                        Button(action: generateReport) {
-                            HStack {
-                                Image(systemName: "doc.text.below.ecg")
-                                    .font(.title2)
-                                Text("Create Report")
-                                    .font(.headline)
-                                Spacer()
-                                Image(systemName: "arrow.right.circle.fill")
-                                    .font(.title3)
-                            }
-                        }
-                        .foregroundColor(.blue)
-                        .padding(.vertical, 8)
-                    }
-                    .listRowBackground(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.blue.opacity(0.1))
-                            .padding(.vertical, 4)
-                    )
-                }
-                .scrollContentBackground(.hidden)
-                .background(Color(UIColor.systemGroupedBackground))
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.gray)
-                            .font(.title3)
-                    }
-                }
-            }
-        }
-    }
-    
-    private func generateReport() {
-        // Placeholder for report generation logic
-        print("Generating report from \(startDate) to \(endDate)")
-    }
 }
